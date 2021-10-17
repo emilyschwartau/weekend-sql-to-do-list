@@ -40,4 +40,26 @@ todoRouter.post('/', (req, res) => {
     })
 });
 
+// PUT
+todoRouter.put('/:id', (req, res) => {
+    let id = req.params.id;
+    console.log(id);
+
+    let queryText = `
+    UPDATE "items"
+    SET "completion_status" = true
+    WHERE "id" = $1
+    `
+
+    let values = [id];
+
+    pool.query(queryText, values).then(result => {
+        res.sendStatus(200);
+    }).catch(err => {
+        console.log(err);
+        res.sendStatus(500);
+    })
+    
+});
+
 module.exports = todoRouter; 
