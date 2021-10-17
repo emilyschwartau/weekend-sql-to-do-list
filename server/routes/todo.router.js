@@ -18,7 +18,7 @@ todoRouter.get('/', (req, res) => {
             console.log(error)
             res.sendStatus(500)
         })
-    })
+})
 
 // POST
 todoRouter.post('/', (req, res) => {
@@ -50,7 +50,6 @@ todoRouter.put('/:id', (req, res) => {
     SET "completion_status" = true
     WHERE "id" = $1
     `
-
     let values = [id];
 
     pool.query(queryText, values).then(result => {
@@ -59,28 +58,28 @@ todoRouter.put('/:id', (req, res) => {
         console.log(err);
         res.sendStatus(500);
     })
-    
+
 });
 
 //DELETE
 todoRouter.delete('/:id', (req, res) => {
     let id = req.params.id
     console.log(id);
-  
-  //pool.query...
+
+    //pool.query...
     let queryText = `
       DELETE FROM "items"
       WHERE "id" = $1;
     `
-  let values = [id];
-  
-  pool.query(queryText, values).then(result => {
-    res.sendStatus(204);
-  }).catch(err => {
-    console.log(err);
-    res.sendStatus(500);
-  })
-  
-  });
+    let values = [id];
 
-module.exports = todoRouter; 
+    pool.query(queryText, values).then(result => {
+        res.sendStatus(204);
+    }).catch(err => {
+        console.log(err);
+        res.sendStatus(500);
+    })
+
+});
+
+module.exports = todoRouter;
