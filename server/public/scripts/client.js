@@ -43,28 +43,47 @@ function postItems( newItem ){
     });
   };
 
+  function putItems(){
+    // do a put request to update completion_status in db
+    console.log('putItems called');
+    let itemData = $(this).closest('tr').data()
+  
+    $.ajax({
+      method: 'PUT',
+      url: `/items/${itemData.id}`,
+      data: {}
+    }).then((res) => {
+      console.log('item completed');
+      getItems();
+    }).catch(err => {
+      console.log('put error', err);
+    })
+  }
+
 function render(itemArray){
     console.log('render called');
     $('#taskList').empty();
-    
-    // let readyBtn = `
-    //   <td>
-    //     <button class="readyBtn">
-    //       Ready to Transfer
-    //     </button>
-    //   </td>`;
   
     for(let item of itemArray){
-    //   let ready = koala.ready_to_transfer;
-      //if koala.ready is true, add nothing,
-      // else add readyBtn
-      let row = $(`<tr>
-      <td>${item.task}</td>
-      <td>${item.completion_status}</td> 
-      </tr>`);
-      //.data(koala); // bundle the koala data into the tr
-      // add koala row to table
-      $('#taskList').append(row);
+        if (item.completion_status == true) {
+            let row = $(`<tr>
+            <td>${item.task}</td>
+            <td>${item.completion_status}</td> 
+            </tr>`)
+            .data(item); // bundle the item data into the tr
+            // add item row to table
+            $('#taskList').append(row);   
+        }
+        if (item.completion_status == false) {
+            let row = $(`<tr>
+            <td>${item.task}</td>
+            <td>${item.completion_status}</td> 
+            <td><button class="completedBtn">Mark as Complete</button></td>
+            </tr>`)
+            .data(item); // bundle the item data into the tr
+            // add item row to table
+            $('#taskList').append(row);   
+        }
     }
   }//end render 
 
@@ -72,19 +91,14 @@ function render(itemArray){
     $( '#addTaskBtn' ).on( 'click', function(){
       console.log( 'in addTaskBtn on click' );
       // get user input and put in an object
-      // NOT WORKING YET :(
-      // using a test object
       let ItemToSend = {
-        task: $(`#taskIn`).val()
-        // age: $(`#ageIn`).val(),
-        // gender: $(`#genderIn`).val(),
-        // ready: $(`#readyForTransferIn`).val(),
-        // notes: $(`#notesIn`).val()
+        task: $(`#taskIn`).val(),
+        completion_status: false
       };
-      // call saveKoala with the new object
-      postItems( ItemToSend ); //
+      // call postItems with the new object
+      postItems( ItemToSend ); 
     }); 
   
     // dynamic click for readyKoala
-    //$('#viewKoalas').on('click', '.readyBtn', readyKoala);
+    $('#taskList').on('click', '.completedBtn', putItems);
   }
