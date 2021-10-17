@@ -86,8 +86,8 @@ function render(itemArray) {
         if (item.completion_status == true) {
             let row = $(`<tr class="completed">
             <td>${item.task}</td>
-            <td>${item.completion_status}</td> 
-            <td><button class="deleteBtn">Delete</button></td>
+            <td></td>
+            <td><button id="deleteBtn" class="btn btn-danger">Delete</button></td>
             </tr>`)
                 .data(item); // bundle the item data into the tr
             // add item row to table
@@ -96,9 +96,8 @@ function render(itemArray) {
         if (item.completion_status == false) {
             let row = $(`<tr>
             <td>${item.task}</td>
-            <td>${item.completion_status}</td> 
-            <td><button class="completedBtn">Mark as Complete</button></td>
-            <td><button class="deleteBtn">Delete</button></td>
+            <td><button id="completedBtn" class="btn btn-success">Mark as Complete</button></td>
+            <td><button id="deleteBtn" class="btn btn-danger">Delete</button></td>
             </tr>`)
                 .data(item); // bundle the item data into the tr
             // add item row to table
@@ -121,8 +120,8 @@ function setupClickListeners() {
     });
 
     // Mark as complete button
-    $('#taskList').on('click', '.completedBtn', putItems);
+    $('#taskList').on('click', '#completedBtn', putItems);
 
     // Delete button
-    $('#taskList').on('click', '.deleteBtn', deleteItems);
+    $('#taskList').on('click', '#deleteBtn', deleteItems);
 }//end setupClickListeners

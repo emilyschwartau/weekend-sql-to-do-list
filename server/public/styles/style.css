@@ -1,11 +1,29 @@
 body {
-    background-color: aquamarine;
+    background-color: #c4e2e2;
 }
 
 tbody {
-    background-color: gray;
+    background-color: #fa9584;
 }
 
 .completed {
-    background-color: green;
+    background-color: #688052;
+}
+
+h1 {
+    background-color: #f9ae54;
+    padding: 30px;
+    font-family:cursive;
+    margin: 5px;
+}
+
+#inputs {
+ margin: 5px;
+ margin-top: 25px;
+ margin-bottom: 25px;
+ 
+}
+
+div {
+    margin: 5px;
 }
