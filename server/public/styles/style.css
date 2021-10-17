@@ -27,3 +27,7 @@ h1 {
 div {
     margin: 5px;
 }
+
+td {
+    width: 33.33%;
+}
