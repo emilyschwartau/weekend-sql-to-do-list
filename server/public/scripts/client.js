@@ -3,7 +3,7 @@ console.log('js');
 $( document ).ready( function(){
     console.log( 'JQ' );
     getItems();
-  
+    setupClickListeners();
 }); // end doc ready
 
 function getItems(){
@@ -21,6 +21,27 @@ function getItems(){
     });
     
 } // end getItems
+
+function postItems( newItem ){
+    console.log( 'in postItems', newItem );
+    // ajax call to server to get koalas
+  
+    $.ajax({
+      method: `POST`,
+      url: `/items`,
+      data: {
+        task: newItem.task,
+        completion_status: newItem.completion_status
+      }
+    }).then(function (response) {
+      console.log(`Item successfully added!`, response);
+      getItems();
+      $(`#taskIn`).val(``);
+      //$(`#readyForTransferIn`).val(``);
+    }).catch(function (response) {
+      alert(`Unable to add item! Error!`, response)
+    });
+  };
 
 function render(itemArray){
     console.log('render called');
@@ -46,3 +67,24 @@ function render(itemArray){
       $('#taskList').append(row);
     }
   }//end render 
+
+  function setupClickListeners() {
+    $( '#addTaskBtn' ).on( 'click', function(){
+      console.log( 'in addTaskBtn on click' );
+      // get user input and put in an object
+      // NOT WORKING YET :(
+      // using a test object
+      let ItemToSend = {
+        task: $(`#taskIn`).val()
+        // age: $(`#ageIn`).val(),
+        // gender: $(`#genderIn`).val(),
+        // ready: $(`#readyForTransferIn`).val(),
+        // notes: $(`#notesIn`).val()
+      };
+      // call saveKoala with the new object
+      postItems( ItemToSend ); //
+    }); 
+  
+    // dynamic click for readyKoala
+    //$('#viewKoalas').on('click', '.readyBtn', readyKoala);
+  }
