@@ -6,9 +6,9 @@ $( document ).ready( function(){
     setupClickListeners();
 }); // end doc ready
 
+//GET
 function getItems(){
     console.log( 'in getItems' );
-    // ajax call to server to get items
   
     $.ajax({
       type: 'GET',
@@ -22,9 +22,9 @@ function getItems(){
     
 } // end getItems
 
+//POST
 function postItems( newItem ){
     console.log( 'in postItems', newItem );
-    // ajax call to server to get koalas
   
     $.ajax({
       method: `POST`,
@@ -43,8 +43,8 @@ function postItems( newItem ){
     });
   };
 
+  //PUT
   function putItems(){
-    // do a put request to update completion_status in db
     console.log('putItems called');
     let itemData = $(this).closest('tr').data()
   
@@ -60,6 +60,26 @@ function postItems( newItem ){
     })
   }
 
+  //DELETE
+  function deleteItems() {
+    //need to put id somewhere
+    let idToDelete = $(this).closest('tr').data('id');
+    
+    console.log(idToDelete);
+   
+    $.ajax({
+      method: 'DELETE',
+      url: `/items/${idToDelete}`  
+    }).then(function(response) {
+        console.log(response);
+          //db is updated, dom is not. Call GET again.
+          getItems();
+    }).catch(function(error) {
+        alert(error);
+    })
+  }
+
+  //RENDER
 function render(itemArray){
     console.log('render called');
     $('#taskList').empty();
@@ -69,6 +89,7 @@ function render(itemArray){
             let row = $(`<tr>
             <td>${item.task}</td>
             <td>${item.completion_status}</td> 
+            <td><button class="deleteBtn">Delete</button></td>
             </tr>`)
             .data(item); // bundle the item data into the tr
             // add item row to table
@@ -79,6 +100,7 @@ function render(itemArray){
             <td>${item.task}</td>
             <td>${item.completion_status}</td> 
             <td><button class="completedBtn">Mark as Complete</button></td>
+            <td><button class="deleteBtn">Delete</button></td>
             </tr>`)
             .data(item); // bundle the item data into the tr
             // add item row to table
@@ -87,18 +109,22 @@ function render(itemArray){
     }
   }//end render 
 
+  //CLICK LISTENERS
   function setupClickListeners() {
+
+    //add task button
     $( '#addTaskBtn' ).on( 'click', function(){
       console.log( 'in addTaskBtn on click' );
-      // get user input and put in an object
       let ItemToSend = {
         task: $(`#taskIn`).val(),
         completion_status: false
       };
-      // call postItems with the new object
       postItems( ItemToSend ); 
     }); 
   
-    // dynamic click for readyKoala
+    // Mark as complete button
     $('#taskList').on('click', '.completedBtn', putItems);
+
+    // Delete button
+    $('#taskList').on('click', '.deleteBtn', deleteItems);
   }
