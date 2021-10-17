@@ -20,6 +20,24 @@ todoRouter.get('/', (req, res) => {
         })
     })
 
+// POST
+todoRouter.post('/', (req, res) => {
+    console.log(req.body)
 
+    let queryText = `
+        INSERT INTO items ("task", "completion_status")
+        VALUES ($1, $2);
+`
+    let values = [req.body.task, req.body.completion_status];
+    pool.query(queryText, values).then(result => {
+
+        console.log('added values', result.rows);
+    }).then((response) => {
+        res.sendStatus(201);
+    }).catch((err) => {
+        console.log(err);
+        res.sendStatus(500);
+    })
+});
 
 module.exports = todoRouter; 
