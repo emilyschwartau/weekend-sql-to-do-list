@@ -86,14 +86,14 @@ function render(itemArray){
   
     for(let item of itemArray){
         if (item.completion_status == true) {
-            let row = $(`<tr>
+            let row = $(`<tr class="completed">
             <td>${item.task}</td>
             <td>${item.completion_status}</td> 
             <td><button class="deleteBtn">Delete</button></td>
             </tr>`)
             .data(item); // bundle the item data into the tr
             // add item row to table
-            $('#taskList').append(row);   
+            $('#taskList').append(row);  
         }
         if (item.completion_status == false) {
             let row = $(`<tr>
